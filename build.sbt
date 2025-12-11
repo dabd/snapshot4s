@@ -176,6 +176,10 @@ lazy val plugin = project
     buildInfoSettings,
     pluginSettings,
     testFrameworks += new TestFramework("weaver.framework.CatsEffect"),
+    libraryDependencies ++= Seq(
+      "org.typelevel" %% "weaver-cats"       % Versions.weaver % Test,
+      "org.typelevel" %% "weaver-scalacheck" % Versions.weaver % Test
+    ),
     mimaPreviousArtifacts := Set.empty,
     scriptedDependencies  := {
       scriptedDependencies.value

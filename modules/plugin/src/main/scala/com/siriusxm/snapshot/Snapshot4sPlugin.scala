@@ -172,21 +172,13 @@ object generated {
     }
   }
 
-  private def applyPatch(source: String, patches: List[(Int, Int, String)]): String = {
+  private def applyPatch(source: String, patches: List[(Int, Int, String)]): String =
     patches
-      .sortBy(_._1)
-      .foldLeft((source, 0))((acc, patch) => {
-        val (source, offset)           = acc
+      .sortBy(-_._1)
+      .foldLeft(source) { (source, patch) =>
         val (startPos, endPos, middle) = patch
-        val start                      = source.take(offset + startPos)
-        val end                        = source.drop(offset + endPos)
-        val nextSource                 = start ++ middle ++ end
-        val lengthIncrease             = middle.length - (endPos - startPos)
-        val nextOffset                 = offset + lengthIncrease
-        (nextSource, nextOffset)
-      })
-      ._1
-  }
+        source.take(startPos) ++ middle ++ source.drop(endPos)
+      }
 
   private implicit class MapFilter[A](list: List[A]) {
     def mapFilter[B](f: A => Option[B]): List[B] =
